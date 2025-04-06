@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Services\ProductService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Http\Request;
@@ -47,7 +49,7 @@ Route::get('test/route/sample', function () {
     return route('test-route');
 })->name('test-route');
 
-// Route Middleware
+// Route Group Middleware
 Route::middleware(['user-middleware'])->group(function () {
     Route::get('route-middleware-group/first', function (Request $request) {
         echo 'first';
@@ -73,4 +75,17 @@ Route::get('/token', function(Request $request){
 // Route Post
 Route::post('/token', function(Request $request){
     return $request->all();
+});
+
+// Route Middleware
+Route::get('users', [UserController::class, 'index'])->middleware('user-middleware');
+
+// Route Resource
+Route::resource('products', ProductController::class);
+
+// Route List
+Route::get('product-list', function (ProductService $productService) {
+    $data['products'] = $productService->listProducts();
+
+    return view('products.list', $data);
 });
