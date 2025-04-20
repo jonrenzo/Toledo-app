@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\Route;
 use \Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ['name'=> 'Toledo-App']);
 });
+
+Route::get('/users', [UserController::class, 'index']);
+
+Route::resource('products', ProductController::class);
 
 // Test Container
 Route::get('/test-container', function (Request $request) {
@@ -78,10 +82,10 @@ Route::post('/token', function(Request $request){
 });
 
 // Route Middleware
-Route::get('users', [UserController::class, 'index'])->middleware('user-middleware');
+// Route::get('users', [UserController::class, 'index'])->middleware('user-middleware');
 
 // Route Resource
-Route::resource('products', ProductController::class);
+// Route::resource('products', ProductController::class);
 
 // Route List
 Route::get('product-list', function (ProductService $productService) {
